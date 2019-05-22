@@ -36,7 +36,7 @@ class Signup  extends Component {
             //console.log(response.data);
             
             // redirect signed in user to dashboard
-            this.props.refreshPage();
+            this.props.refreshPageAndGoToLogin();
           },
           (error)=>{
             console.log(error);

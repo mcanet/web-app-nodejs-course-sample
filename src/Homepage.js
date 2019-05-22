@@ -10,6 +10,7 @@ class Homepage  extends Component {
         super(props);
         this.state = {show: false};
         this.refreshPage = this.refreshPage.bind(this);
+        this. refreshPageAndGoToLogin = this.refreshPageAndGoToLogin.bind(this);
     }
 
     toggle() {
@@ -20,6 +21,11 @@ class Homepage  extends Component {
 
     refreshPage(){
         this.forceUpdate();
+    }
+    
+    refreshPageAndGoToLogin(){
+        this.refreshPage();
+        this.toggle();
     }
 
     logout(){
@@ -60,7 +66,7 @@ class Homepage  extends Component {
                     <button onClick={this.toggle.bind(this)}>Register</button>
                  </div>
                  <div style={ hidden }>
-                    <Signup refreshPage={this.refreshPage} />
+                    <Signup refreshPageAndGoToLogin={this.refreshPageAndGoToLogin} />
                 </div>
                   
                </div>
