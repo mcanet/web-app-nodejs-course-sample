@@ -27,7 +27,8 @@ class Login  extends Component {
             Auth.authenticateUser(response.data.token);
             console.log('token:',Auth.getToken());
             this.setState({name:'',password:''});
-            //windows.location.reload();
+            
+            this.props.refreshPage();
         },
         (error)=>{
           console.log(error);

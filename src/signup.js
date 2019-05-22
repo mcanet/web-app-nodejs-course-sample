@@ -33,10 +33,10 @@ class Signup  extends Component {
             console.log(result);
         }).then(
           (response) =>{
-            console.log(response.data);
+            //console.log(response.data);
             
             // redirect signed in user to dashboard
-            document.location.reload(true);
+            this.props.refreshPage();
           },
           (error)=>{
             console.log(error);

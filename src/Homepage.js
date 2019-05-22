@@ -9,12 +9,17 @@ class Homepage  extends Component {
     constructor(props) {
         super(props);
         this.state = {show: false};
+        this.refreshPage = this.refreshPage.bind(this);
     }
 
     toggle() {
 		this.setState({
 			shown: !this.state.shown
 		});
+    }
+
+    refreshPage(){
+        this.forceUpdate();
     }
 
     logout(){
@@ -29,7 +34,7 @@ class Homepage  extends Component {
         // Delete token from browser
         Auth.deauthenticateUser();
 
-        
+        this.refreshPage();
     }
     
     render() {
@@ -51,11 +56,11 @@ class Homepage  extends Component {
              ) : (
                <div id="login">
                  <div style={ shown }>
-                    <Login/><br/>
+                    <Login refreshPage={this.refreshPage} /><br/>
                     <button onClick={this.toggle.bind(this)}>Register</button>
                  </div>
                  <div style={ hidden }>
-                    <Signup/>
+                    <Signup refreshPage={this.refreshPage} />
                 </div>
                   
                </div>
