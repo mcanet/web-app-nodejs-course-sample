@@ -3,7 +3,7 @@ module.exports = function (app){
 var express = require('express');
 var router =  express.Router();
 var passport = require('passport');
-const bcrypt = require('bcrypt');
+//const bcrypt = require('bcrypt');
 const{ User, Product} = require('../db');
 
 // import passport and passport-jwt modules
@@ -142,6 +142,13 @@ router.post('/addproduct', passport.authenticate('jwt',{session:false}), functio
     );
 });
 
+router.post('/test', passport.authenticate('jwt',{session:false}), function(req, res) {     
+  console.log('token:',req.headers.authorization.split('')[1]);
+  jwt.verify(token,jwtOptions.secretOrKey,function(err,decode){
+    console.log('UserID taked from payload of token:',decode.payload.id);
+  })
+
+});
 //module.exports = router;
 
 return router;

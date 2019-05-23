@@ -28,11 +28,20 @@ class Homepage  extends Component {
         this.toggle();
     }
 
+    componentWillMount(){
+        Axios.get('/test',{headers: {
+            Authorization: "Bearer " + Auth.getToken()
+         }}).then((response) => {
+            console.log(response.data);
+           
+        });
+    }
+
     logout(){
         alert('logout');
 
         // Add this token to blacklist 
-        Axios.post('/logout',{token:Auth.getToken()}).then((result)=>{
+        Axios.post('/logout',{},{token:Auth.getToken()}).then((result)=>{
             // access results
             console.log(result);
         })
