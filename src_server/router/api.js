@@ -3,7 +3,7 @@ module.exports = function (app){
 var express = require('express');
 var router =  express.Router();
 var passport = require('passport');
-//const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt');
 const{ User, Product} = require('../db');
 
 // import passport and passport-jwt modules
@@ -72,12 +72,14 @@ router.get('/', function(req, res) {
 router.post('/register', function(req, res, next) {
   const { name, email, password } = req.body;
 
-  //const saltRounds = 10;
-  //bycrypt.hash(password,saltRounds,function(err,hashedPassword){
-    createUser({ name, email, password }).then(user =>
+  const saltRounds = 10;
+  bcrypt.hash(password,saltRounds,function(err,hash){
+    console.log('hashpassword:',hash)
+    var password = hash;
+    createUser({ name, email, password}).then(user =>
       res.json({ name, msg: 'Account created successfully' })
     );
-  //});
+  });
 
 });
 
@@ -95,18 +97,21 @@ router.post('/login', async function(req, res, next) {
       res.status(401).json({ msg: 'No such user found', user });
     }
     //console.log(user);
-   if (user.password === password) {
-      // from now on we’ll identify the user by the id and the id is
-      console.log('ready to sign token')
-      // the only personalized value that goes into our token
-      let payload = { id: user.id };
-      let token = jwt.sign(payload, jwtOptions.secretOrKey);
-      var returnJson = { msg: 'ok', token: token }; 
-      console.log(returnJson);
-      res.json(returnJson);
-    } else {
-      res.status(401).json({ msg: 'Password is incorrect' });
-    }
+    bcrypt.compare(password,user.password,function(err,resPassword){
+      if (resPassword){//user.password === password) {
+        // from now on we’ll identify the user by the id and the id is
+        console.log('ready to sign token')
+        // the only personalized value that goes into our token
+        let payload = { id: user.id };
+        let token = jwt.sign(payload, jwtOptions.secretOrKey);
+        var returnJson = { msg: 'ok', token: token }; 
+        console.log(returnJson);
+        res.json(returnJson);
+      } else {
+        res.status(401).json({ msg: 'Password is incorrect' });
+      }
+    });
+   
   }
 });
 
