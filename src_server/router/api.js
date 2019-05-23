@@ -143,11 +143,15 @@ router.post('/addproduct', passport.authenticate('jwt',{session:false}), functio
 });
 
 router.post('/test', passport.authenticate('jwt',{session:false}), function(req, res) {     
-  console.log('token:',req.headers.authorization.split('')[1]);
+  console.log('Arrived to TEST');
+  var token = req.headers.authorization.split(' ')[1];
+  console.log('token:[',token,']');
+  
   jwt.verify(token,jwtOptions.secretOrKey,function(err,decode){
-    console.log('UserID taked from payload of token:',decode.payload.id);
+    console.log('UserID taked from payload of token:',decode.id);
+  
   })
-
+  
 });
 //module.exports = router;
 

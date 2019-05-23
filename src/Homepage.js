@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import Axios from 'axios';
+import axios from 'axios';
 import Auth from './Auth';
 import Login from './login';
 import Signup from './signup';
@@ -29,11 +29,11 @@ class Homepage  extends Component {
     }
 
     componentWillMount(){
-        Axios.get('/test',{headers: {
+        console.log('Mount homepage')
+        axios.post('/test',{},{headers: {
             Authorization: "Bearer " + Auth.getToken()
          }}).then((response) => {
             console.log(response.data);
-           
         });
     }
 
@@ -41,7 +41,7 @@ class Homepage  extends Component {
         alert('logout');
 
         // Add this token to blacklist 
-        Axios.post('/logout',{},{token:Auth.getToken()}).then((result)=>{
+        axios.post('/logout',{},{token:Auth.getToken()}).then((result)=>{
             // access results
             console.log(result);
         })
